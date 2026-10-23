@@ -1,0 +1,632 @@
+{
+  "description": "Twenty-request contract scenario. Phase 2 is submitted only after phase 1 has settled.",
+  "phases": [
+    {
+      "name": "phase-1",
+      "requests": [
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-alpha-1",
+            "externalJobId": "alpha",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": " Full Stack Developer ",
+              "company": " Example Labs ",
+              "location": " Surat ",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/alpha",
+              "skills": [" TypeScript ", "MongoDB", "typescript"]
+            }
+          }
+        },
+        {
+          "expectStatus": 400,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": " evt-space ",
+            "externalJobId": "space",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Rejected",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/space",
+              "skills": ["typescript"]
+            }
+          }
+        },
+        {
+          "expectStatus": 200,
+          "body": {
+            "operation": "upsert",
+            "version": 1,
+            "externalJobId": "alpha",
+            "eventId": "evt-alpha-1",
+            "sourceId": "main",
+            "tenantId": "tenant-a",
+            "payload": {
+              "skills": [" TypeScript ", "MongoDB", "typescript"],
+              "applyUrl": "https://example.test/jobs/alpha",
+              "experienceMax": 3,
+              "experienceMin": 1,
+              "location": " Surat ",
+              "company": " Example Labs ",
+              "title": " Full Stack Developer "
+            }
+          }
+        },
+        {
+          "expectStatus": 409,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-alpha-1",
+            "externalJobId": "alpha",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Conflicting Title",
+              "company": " Example Labs ",
+              "location": " Surat ",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/alpha",
+              "skills": [" TypeScript ", "MongoDB", "typescript"]
+            }
+          }
+        },
+        {
+          "expectStatus": 400,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-fix",
+            "externalJobId": "fixed",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "  Backend Engineer  ",
+              "company": " Example Labs ",
+              "location": " Surat ",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "http://example.test/jobs/fixed",
+              "skills": [" TypeScript ", "MongoDB", "typescript"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-fix",
+            "externalJobId": "fixed",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "  Backend Engineer  ",
+              "company": " Example Labs ",
+              "location": " Surat ",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/fixed",
+              "skills": [" TypeScript ", "MongoDB", "typescript"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-b",
+            "sourceId": "main",
+            "eventId": "evt-alpha-1",
+            "externalJobId": "alpha",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Tenant B Role",
+              "company": "Other Labs",
+              "location": "Ahmedabad",
+              "experienceMin": 0,
+              "experienceMax": 2,
+              "applyUrl": "https://example.test/jobs/tenant-b-alpha",
+              "skills": ["python"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "other",
+            "eventId": "evt-alpha-1",
+            "externalJobId": "alpha",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Other Source Role",
+              "company": "Example Labs",
+              "location": "Vadodara",
+              "experienceMin": 2,
+              "experienceMax": 4,
+              "applyUrl": "https://example.test/jobs/other-alpha",
+              "skills": ["sql"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-alpha-3",
+            "externalJobId": "alpha",
+            "version": 3,
+            "operation": "upsert",
+            "payload": {
+              "title": "Senior Full Stack Developer",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 3,
+              "experienceMax": 6,
+              "applyUrl": "https://example.test/jobs/alpha",
+              "skills": ["Go", " Go ", "go"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-beta-1",
+            "externalJobId": "beta",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Retry Role",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/beta",
+              "skills": ["mongodb"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-gamma-1",
+            "externalJobId": "gamma",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Permanent Failure",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/gamma",
+              "skills": ["java"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-delta-1",
+            "externalJobId": "delta",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Exhausted Role",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/delta",
+              "skills": ["rust"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-epsilon-arch",
+            "externalJobId": "epsilon",
+            "version": 2,
+            "operation": "archive"
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-eta-1",
+            "externalJobId": "eta",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Platform Engineer",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 2,
+              "experienceMax": 5,
+              "applyUrl": "https://example.test/jobs/eta",
+              "skills": ["kubernetes"]
+            }
+          }
+        }
+      ],
+      "events": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-alpha-1",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-alpha-3",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-fix",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-b",
+          "sourceId": "main",
+          "eventId": "evt-alpha-1",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "other",
+          "eventId": "evt-alpha-1",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-beta-1",
+          "status": "succeeded",
+          "attempts": 2,
+          "sawStatusCode": 429
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-gamma-1",
+          "status": "failed",
+          "attempts": 1,
+          "errorIncludes": "422",
+          "sawStatusCode": 422
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-delta-1",
+          "status": "failed",
+          "attempts": 3,
+          "errorIncludes": "503",
+          "sawStatusCode": 503
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-epsilon-arch",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-eta-1",
+          "status": "succeeded"
+        }
+      ],
+      "jobs": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "alpha",
+          "version": 3,
+          "status": "active",
+          "title": "Senior Full Stack Developer",
+          "skills": ["go"]
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "fixed",
+          "version": 1,
+          "status": "active",
+          "title": "Backend Engineer",
+          "company": "Example Labs",
+          "location": "Surat",
+          "skills": ["typescript", "mongodb"]
+        },
+        {
+          "tenantId": "tenant-b",
+          "sourceId": "main",
+          "externalJobId": "alpha",
+          "version": 1,
+          "status": "active",
+          "title": "Tenant B Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "other",
+          "externalJobId": "alpha",
+          "version": 1,
+          "status": "active",
+          "title": "Other Source Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "beta",
+          "version": 1,
+          "status": "active",
+          "title": "Retry Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "epsilon",
+          "version": 2,
+          "status": "archived",
+          "title": null
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "eta",
+          "version": 1,
+          "status": "active",
+          "title": "Platform Engineer"
+        }
+      ],
+      "absentJobs": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "gamma"
+        },
+        { "tenantId": "tenant-a", "sourceId": "main", "externalJobId": "delta" }
+      ]
+    },
+    {
+      "name": "phase-2",
+      "requests": [
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-alpha-2",
+            "externalJobId": "alpha",
+            "version": 2,
+            "operation": "upsert",
+            "payload": {
+              "title": "Stale Title",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 3,
+              "applyUrl": "https://example.test/jobs/alpha",
+              "skills": ["php"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-epsilon-1",
+            "externalJobId": "epsilon",
+            "version": 1,
+            "operation": "upsert",
+            "payload": {
+              "title": "Too Late",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 1,
+              "experienceMax": 2,
+              "applyUrl": "https://example.test/jobs/epsilon",
+              "skills": ["php"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-epsilon-3",
+            "externalJobId": "epsilon",
+            "version": 3,
+            "operation": "upsert",
+            "payload": {
+              "title": "Reactivated Role",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 2,
+              "experienceMax": 4,
+              "applyUrl": "https://example.test/jobs/epsilon",
+              "skills": ["go"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-eta-2",
+            "externalJobId": "eta",
+            "version": 2,
+            "operation": "upsert",
+            "payload": {
+              "title": "Should Not Apply",
+              "company": "Example Labs",
+              "location": "Surat",
+              "experienceMin": 4,
+              "experienceMax": 8,
+              "applyUrl": "https://example.test/jobs/eta",
+              "skills": ["rust"]
+            }
+          }
+        },
+        {
+          "expectStatus": 202,
+          "body": {
+            "tenantId": "tenant-a",
+            "sourceId": "main",
+            "eventId": "evt-alpha-arch",
+            "externalJobId": "alpha",
+            "version": 4,
+            "operation": "archive"
+          }
+        },
+        {
+          "expectStatus": 200,
+          "body": {
+            "operation": "archive",
+            "version": 4,
+            "externalJobId": "alpha",
+            "eventId": "evt-alpha-arch",
+            "sourceId": "main",
+            "tenantId": "tenant-a"
+          }
+        }
+      ],
+      "events": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-alpha-2",
+          "status": "noop",
+          "attempts": 0
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-epsilon-1",
+          "status": "noop",
+          "attempts": 0
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-epsilon-3",
+          "status": "succeeded"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-eta-2",
+          "status": "failed",
+          "attempts": 1,
+          "errorIncludes": "422"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "eventId": "evt-alpha-arch",
+          "status": "succeeded"
+        }
+      ],
+      "jobs": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "alpha",
+          "version": 4,
+          "status": "archived",
+          "title": "Senior Full Stack Developer",
+          "skills": ["go"]
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "fixed",
+          "version": 1,
+          "status": "active",
+          "title": "Backend Engineer",
+          "skills": ["typescript", "mongodb"]
+        },
+        {
+          "tenantId": "tenant-b",
+          "sourceId": "main",
+          "externalJobId": "alpha",
+          "version": 1,
+          "status": "active",
+          "title": "Tenant B Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "other",
+          "externalJobId": "alpha",
+          "version": 1,
+          "status": "active",
+          "title": "Other Source Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "beta",
+          "version": 1,
+          "status": "active",
+          "title": "Retry Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "epsilon",
+          "version": 3,
+          "status": "active",
+          "title": "Reactivated Role"
+        },
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "eta",
+          "version": 1,
+          "status": "active",
+          "title": "Platform Engineer"
+        }
+      ],
+      "absentJobs": [
+        {
+          "tenantId": "tenant-a",
+          "sourceId": "main",
+          "externalJobId": "gamma"
+        },
+        { "tenantId": "tenant-a", "sourceId": "main", "externalJobId": "delta" }
+      ]
+    }
+  ]
+}

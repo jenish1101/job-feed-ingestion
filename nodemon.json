@@ -1,0 +1,5 @@
+{
+  "exec": "node --env-file=.env --import tsx src/index.ts",
+  "ext": "ts,json",
+  "watch": ["src"]
+}

@@ -1,0 +1,33 @@
+{
+  "default": "success",
+  "rules": [
+    {
+      "tenantId": "tenant-a",
+      "sourceId": "main",
+      "externalJobId": "beta",
+      "version": 1,
+      "responses": [429, 200]
+    },
+    {
+      "tenantId": "tenant-a",
+      "sourceId": "main",
+      "externalJobId": "gamma",
+      "version": 1,
+      "responses": [422]
+    },
+    {
+      "tenantId": "tenant-a",
+      "sourceId": "main",
+      "externalJobId": "delta",
+      "version": 1,
+      "responses": [503, 503, 503]
+    },
+    {
+      "tenantId": "tenant-a",
+      "sourceId": "main",
+      "externalJobId": "eta",
+      "version": 2,
+      "responses": [422]
+    }
+  ]
+}
