@@ -118,7 +118,19 @@ cd job-feed-ingestion
 npm install
 ```
 
-### 2. Environment Configuration
+### 2. Start MongoDB with Docker
+
+Docker Compose starts only the database. The API runs on the machine with `npm run dev`.
+
+```bash
+docker compose up -d
+```
+
+`docker-compose.yml` maps `27018:27017`. The number on the left, **27018**, is the port on your computer. The number on the right, **27017**, is MongoDB's port inside the container. The app must connect to **27018**.
+
+Stop the database with `docker compose down`. That keeps the saved data. `docker compose down -v` deletes it.
+
+### 3. Environment Configuration
 
 Copy `.env.example` to `.env`:
 
@@ -126,15 +138,19 @@ Copy `.env.example` to `.env`:
 cp .env.example .env
 ```
 
-Ensure your `MONGO_URL` is configured (defaults to `mongodb://127.0.0.1:27018/jobfeed` or your MongoDB Atlas connection string).
+`.env.example` already points at the Docker host port:
 
-### 3. Run the Development Server
+```bash
+MONGO_URL=mongodb://127.0.0.1:27018/jobfeed
+```
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-The server will start at `http://127.0.0.1:3000`.
+The server will start at `http://127.0.0.1:3000`. `GET /health` returns `{"status":"ok","dependencies":{"mongo":"up"}}` when the API can reach this Docker database.
 
 ---
 
@@ -378,7 +394,7 @@ npm run load
 | Environment Variable | Default Value                       | Description                                       |
 | :------------------- | :---------------------------------- | :------------------------------------------------ |
 | `PORT`               | `3000`                              | HTTP port for Express server                      |
-| `MONGO_URL`          | `mongodb://127.0.0.1:27018/jobfeed` | MongoDB connection URI                            |
+| `MONGO_URL`          | `mongodb://127.0.0.1:27018/jobfeed` | MongoDB connection URI. Use the host port from `docker-compose.yml`. |
 | `WORKER_COUNT`       | `2`                                 | Number of concurrent worker loops                 |
 | `CLAIM_LEASE_MS`     | `15000`                             | Worker claim lock lease duration in ms            |
 | `POLL_INTERVAL_MS`   | `200`                               | Idle worker poll sleep duration in ms             |
